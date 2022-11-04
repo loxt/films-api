@@ -14,6 +14,7 @@ import { SeederModule } from 'nestjs-sequelize-seeder';
     }),
     SeederModule.forRoot({
       runOnlyIfTableIsEmpty: true,
+      enableAutoId: false,
     }),
     FilmsModule,
   ],

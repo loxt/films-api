@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { FilmsService } from './films.service';
 
 @Controller('films')
@@ -6,8 +6,12 @@ export class FilmsController {
   constructor(private readonly filmsService: FilmsService) {}
 
   @Get()
-  findAll() {
-    return this.filmsService.findAll();
+  // get query params
+  async findAll(@Query() query: any) {
+    const limit = query.limit || 10;
+    const offset = query.offset || 0;
+    const fields = query.fields ? query.fields.split(',') : [];
+    return this.filmsService.findAll(limit, offset, fields);
   }
 
   @Get(':id')
