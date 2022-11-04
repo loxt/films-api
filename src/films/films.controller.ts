@@ -7,15 +7,20 @@ export class FilmsController {
 
   @Get()
   // get query params
-  async findAll(@Query() query: any) {
-    const limit = query.limit || 10;
-    const offset = query.offset || 0;
-    const fields = query.fields ? query.fields.split(',') : [];
-    return this.filmsService.findAll(limit, offset, fields);
+  async findAll(
+    @Query('limit') limit = 10,
+    @Query('offset') offset = 0,
+    @Query('fields') fields: string,
+  ) {
+    // verify if query fields contains comma separated values
+    const fieldsArray = fields ? fields.split(',') : [];
+
+    return this.filmsService.findAll(limit, offset, fieldsArray);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.filmsService.findOne(+id);
+  findOne(@Param('id') id: string, @Query('fields') fields: string) {
+    const fieldsArray = fields ? fields.split(',') : [];
+    return this.filmsService.findOne(id, fieldsArray);
   }
 }
